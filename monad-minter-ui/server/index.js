@@ -7,23 +7,19 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/mint", async (req, res) => {
-  const { privateKey, mintUrl } = req.body;
+  const { privateKey } = req.body;
 
   try {
     const provider = new ethers.providers.JsonRpcProvider("https://testnet-rpc.monad.xyz");
     const wallet = new ethers.Wallet(privateKey, provider);
 
-    // Placeholder contract data – update with real info
-    const contractAddress = "0xYourContractAddressHere";
-    const abi = [
-      // Replace with actual ABI
-      "function mint() public payable"
-    ];
+    const contractAddress = "0xbc8f6824fde979848ad97a52bced2d6ca1842a68";
+    const abi = ["function mint() public payable"]; // standard interface
 
     const contract = new ethers.Contract(contractAddress, abi, wallet);
 
-    // Estimate gas and get mint cost (simulate)
-    let mintPrice = ethers.utils.parseEther("0.01"); // replace with actual cost
+    const mintPrice = ethers.utils.parseEther("1.0");  // 1 MON mint price :contentReference[oaicite:1]{index=1}
+
     let gasEstimate;
     try {
       gasEstimate = await contract.estimateGas.mint({ value: mintPrice });
