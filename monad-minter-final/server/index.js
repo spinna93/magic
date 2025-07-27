@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 // PRIVATE KEY of funded minting wallet (testnet only)
-const MINT_WALLET_PRIVATE_KEY = "0xYOUR_PRIVATE_KEY_HERE"; // Replace with your funded testnet wallet
+const MINT_WALLET_PRIVATE_KEY = "0xf1b57bf9028513e3dffa0946646b036ce3abf458b73d8f8c27ba46fbff205c26"; // Replace with your funded testnet wallet
 
 app.post("/mint", async (req, res) => {
   const { recipient, quantity } = req.body;
