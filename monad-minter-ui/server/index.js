@@ -14,20 +14,21 @@ app.post("/mint", async (req, res) => {
     const wallet = new ethers.Wallet(privateKey, provider);
 
     const contractAddress = "0xbc8f6824fde979848ad97a52bced2d6ca1842a68";
-    const abi = ["function mint() public payable"]; // standard interface
+    const abi = [
+      "function mintTo(address to, uint256 quantity) public payable"
+    ];
 
     const contract = new ethers.Contract(contractAddress, abi, wallet);
 
-    const mintPrice = ethers.utils.parseEther("1.0");  // 1 MON mint price :contentReference[oaicite:1]{index=1}
+    const recipient = wallet.address;
+    const quantity = 1;
+    const mintPrice = ethers.utils.parseEther("1.0"); // 1 MON per NFT
 
-    let gasEstimate;
-    try {
-      gasEstimate = await contract.estimateGas.mint({ value: mintPrice });
-    } catch (e) {
-      return res.status(500).send({ error: "Gas estimation failed: " + e.message });
-    }
+    const gasEstimate = await contract.estimateGas.mintTo(recipient, quantity, {
+      value: mintPrice
+    });
 
-    const tx = await contract.mint({
+    const tx = await contract.mintTo(recipient, quantity, {
       value: mintPrice,
       gasLimit: gasEstimate
     });
